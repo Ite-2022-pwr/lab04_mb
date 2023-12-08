@@ -2,6 +2,7 @@ module pwr.ite.bedrylo.gui {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires pwr.ite.bedrylo.client;
 
 
     opens pwr.ite.bedrylo.gui to javafx.fxml;
