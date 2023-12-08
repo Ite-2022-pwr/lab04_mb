@@ -3,6 +3,7 @@ module pwr.ite.bedrylo.gui {
     requires javafx.fxml;
     requires javafx.graphics;
     requires pwr.ite.bedrylo.client;
+    requires lombok;
 
 
     opens pwr.ite.bedrylo.gui to javafx.fxml;

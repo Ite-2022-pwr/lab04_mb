@@ -4,22 +4,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import pwr.ite.bedrylo.client.models.*;
 import pwr.ite.bedrylo.client.service.implementations.HTTPHandler;
 import pwr.ite.bedrylo.client.service.implementations.StationMethods;
 
-import java.lang.invoke.VarHandle;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class mainController {
 
@@ -41,7 +34,9 @@ public class mainController {
     private BarChart stationAQIndexChart;
     @FXML
     private Tab stationReadingsTab;
-    
+    @FXML
+    private TabPane pointPlotTab;
+
     @FXML
     private void initialize() {
         stationAQIndexTab.setDisable(true);
@@ -78,12 +73,13 @@ public class mainController {
         AirQualityIndex index = stationMethods.getStationAirQualityIndex(selectedStation.getId());
         selectedStation.setAirQualityIndex(index);
         loadStationAQIndex();
+        createSensorReadingsDataTabs(selectedStation);
     }
     
     
     private void loadStationAQIndex() {
         stationAQIndexChart.getData().clear();
-        stationAQIndexChart.setTitle("Air quality index for '" + selectedStation.getStationName() + "'");
+        stationAQIndexChart.setTitle("Indeks jakości powietrza dla:" + selectedStation.getStationName());
         createIndexChart(selectedStation.getAirQualityIndex());
     }
 
@@ -144,9 +140,41 @@ public class mainController {
             case 3 -> "#ffa700";
             case 4 -> "#ff0000";
             case 5 -> "#000000";
-            default -> throw new IllegalStateException("Unexpected value: " + indexLevel);
+            default -> throw new IllegalStateException("niespodziewana wartość: " + indexLevel);
         };
         return barColor;
+    }
+
+    private void createSensorReadingsDataTabs(Station station) {
+        pointPlotTab.getTabs().clear();
+        for(Sensor sensor : station.getSensors()) {
+            SensorReading sensorData = sensor.getSensorReading();
+            String paramCode = sensor.getParam().getParamCode();
+
+            CategoryAxis xAxis = new CategoryAxis();
+            NumberAxis yAxis = new NumberAxis();
+            LineChart<String, Number> chart = new LineChart<>(xAxis, yAxis);
+            chart.setTitle("Dane w czasie dla: " + paramCode);
+            chart.setLegendVisible(false);
+            LineChart.Series<String,Number> series = new LineChart.Series<>();
+            series.setName(paramCode + " wartość");
+            for(SensorReadingValue value : sensorData.getValues()) {
+                if(value.getValue() != null) {
+                    series.getData().add(new LineChart.Data<>(value.getDate(), value.getValue()));
+                } else {
+                    series.getData().add(new LineChart.Data<>(value.getDate(), 0.0));
+                }
+            }
+            chart.getData().add(series);
+            series.getNode().setStyle("-fx-stroke: #000000");
+            for(LineChart.Data<String, Number> data : series.getData()) {
+                data.getNode().setScaleX(0.5);
+                data.getNode().setScaleY(0.5);
+                data.getNode().setStyle("-fx-background-color: #000000");
+            }
+            Tab tab = new Tab(paramCode, chart);
+            pointPlotTab.getTabs().add(tab);
+        }
     }
     
 }

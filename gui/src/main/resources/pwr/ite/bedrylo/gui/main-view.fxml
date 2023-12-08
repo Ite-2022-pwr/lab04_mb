@@ -50,7 +50,7 @@
           </Tab>
           <Tab fx:id="stationReadingsTab" text="Pomiary w czasie">
                <content>
-                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
+                  <TabPane fx:id="pointPlotTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
                </content>
           </Tab>
         </tabs>
