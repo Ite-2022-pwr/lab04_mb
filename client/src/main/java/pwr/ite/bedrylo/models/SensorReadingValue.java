@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class SensorReadingValue {
 
-    private String readingDate;
+    private String date;
     
-    private Double readingValue;
+    private Double value;
 
 }

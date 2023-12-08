@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class SensorReading {
     
-    private String readingName;
+    private String key;
     
-    private SensorReadingValue[] sensorReadingValues;
+    private SensorReadingValue[] values;
     
 }

@@ -1,4 +1,4 @@
-package pwr.ite.bedrylo.service;
+package pwr.ite.bedrylo.service.interfaces;
 
 public interface IHTTPHandler {
     

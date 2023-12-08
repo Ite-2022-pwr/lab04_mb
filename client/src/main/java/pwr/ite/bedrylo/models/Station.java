@@ -19,7 +19,7 @@ public class Station {
     @JsonIgnore
     private List<Sensor> sensors;
     
-    
+    private AirQualityIndex airQualityIndex;
     
     
     

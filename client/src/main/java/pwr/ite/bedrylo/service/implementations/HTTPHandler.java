@@ -1,13 +1,14 @@
-package pwr.ite.bedrylo.service;
+package pwr.ite.bedrylo.service.implementations;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pwr.ite.bedrylo.service.interfaces.IHTTPHandler;
 
 
-public class HTTPHandler implements IHTTPHandler{
+public class HTTPHandler implements IHTTPHandler {
     
     public static HTTPHandler INSTANCE = null;
     
