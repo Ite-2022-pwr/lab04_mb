@@ -15,6 +15,7 @@ import pwr.ite.bedrylo.client.models.*;
 import pwr.ite.bedrylo.client.service.implementations.HTTPHandler;
 import pwr.ite.bedrylo.client.service.implementations.StationMethods;
 
+import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,6 +89,8 @@ public class mainController {
 
     private void createIndexChart(AirQualityIndex airQualityIndex) {
         XYChart.Series<String,Double> series = new XYChart.Series<String, Double>();
+        stationAQIndexChart.getData().add(series);
+        stationAQIndexChart.setLegendVisible(false);
         series.setName("Indeks jakości powietrza");
         addDataToSeries("ST", airQualityIndex.getStSourceDataDate(), series, airQualityIndex.getStIndexLevel());
         addDataToSeries("SO2", airQualityIndex.getSo2SourceDataDate(), series, airQualityIndex.getSo2IndexLevel());
@@ -95,7 +98,6 @@ public class mainController {
         addDataToSeries("PM10", airQualityIndex.getPm10SourceDataDate(), series, airQualityIndex.getPm10IndexLevel());
         addDataToSeries("PM25", airQualityIndex.getPm25SourceDataDate(), series, airQualityIndex.getPm25IndexLevel());
         addDataToSeries("O3", airQualityIndex.getO3SourceDataDate(), series, airQualityIndex.getO3IndexLevel());
-        stationAQIndexChart.getData().add(series);
     }
     
     private void addDataToSeries(String key, String date, XYChart.Series<String,Double> series, IndexLevel indexLevel) {
@@ -118,10 +120,33 @@ public class mainController {
                         .findFirst()
                         .orElse(null); 
                 if(sensorReadingValue != null) {
-                    series.getData().add(new XYChart.Data<>(key + "\n" + indexLevel.getIndexLevelName(), sensorReadingValue.getValue()));
+                    var barColor = determineBarColor(indexLevel.getId());
+                    var data = new XYChart.Data<>(key + "\n" + indexLevel.getIndexLevelName(), sensorReadingValue.getValue());
+                    series.getData().add(data);
+                    if (data.getNode() != null) {
+                            data.getNode().setStyle("-fx-bar-fill: " + barColor);
+                    } else {
+                        System.out.println("null");
+                    }
+                    
+                    
                 }
             }
         }
     };
+    
+    private String determineBarColor(int indexLevel){
+        String barColor = switch (indexLevel) {
+            case -1 -> "#000000";
+            case 0 -> "#2cba00";
+            case 1 -> "#a3ff00";
+            case 2 -> "#fff400";
+            case 3 -> "#ffa700";
+            case 4 -> "#ff0000";
+            case 5 -> "#000000";
+            default -> throw new IllegalStateException("Unexpected value: " + indexLevel);
+        };
+        return barColor;
+    }
     
 }
