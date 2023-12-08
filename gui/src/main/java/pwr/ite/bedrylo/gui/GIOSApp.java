@@ -5,14 +5,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import pwr.ite.bedrylo.client.models.*;
+import pwr.ite.bedrylo.client.service.interfaces.*;
+import pwr.ite.bedrylo.client.service.implementations.*;
+
+
+
 import java.io.IOException;
 
 public class GIOSApp extends Application {
+    
+    private final HTTPHandler httpHandler = HTTPHandler.getInstance();
+    private final StationMethods stationMethods = StationMethods.getInstance();
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GIOSApp.class.getResource("initial-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(GIOSApp.class.getResource("main-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("GIOŚ pogodynkaPRO+ v2023");
         stage.setScene(scene);
         stage.show();
     }
