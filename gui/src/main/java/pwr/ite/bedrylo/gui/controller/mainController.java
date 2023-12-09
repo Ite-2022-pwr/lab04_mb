@@ -94,6 +94,10 @@ public class mainController {
         addDataToSeries("PM10", airQualityIndex.getPm10SourceDataDate(), series, airQualityIndex.getPm10IndexLevel());
         addDataToSeries("PM25", airQualityIndex.getPm25SourceDataDate(), series, airQualityIndex.getPm25IndexLevel());
         addDataToSeries("O3", airQualityIndex.getO3SourceDataDate(), series, airQualityIndex.getO3IndexLevel());
+        System.out.println(series.getData().size());
+        if (series.getData().isEmpty()) {
+            stationAQIndexChart.setTitle("Brak danych dla wybranej stacji");
+        }
     }
     
     private void addDataToSeries(String key, String date, XYChart.Series<String,Double> series, IndexLevel indexLevel) {
