@@ -79,7 +79,7 @@ public class mainController {
     
     private void loadStationAQIndex() {
         stationAQIndexChart.getData().clear();
-        stationAQIndexChart.setTitle("Indeks jakości powietrza dla:" + selectedStation.getStationName());
+        stationAQIndexChart.setTitle("Indeks jakości powietrza dla: " + selectedStation.getStationName());
         createIndexChart(selectedStation.getAirQualityIndex());
     }
 
@@ -116,8 +116,8 @@ public class mainController {
                         .findFirst()
                         .orElse(null); 
                 if(sensorReadingValue != null) {
-                    var barColor = determineBarColor(indexLevel.getId());
-                    var data = new XYChart.Data<>(key + "\n" + indexLevel.getIndexLevelName(), sensorReadingValue.getValue());
+                    String barColor = determineBarColor(indexLevel.getId());
+                    XYChart.Data<String, Double> data = new XYChart.Data<>(key + "\n" + indexLevel.getIndexLevelName(), sensorReadingValue.getValue());
                     series.getData().add(data);
                     if (data.getNode() != null) {
                             data.getNode().setStyle("-fx-bar-fill: " + barColor);
@@ -132,7 +132,7 @@ public class mainController {
     };
     
     private String determineBarColor(int indexLevel){
-        String barColor = switch (indexLevel) {
+        return switch (indexLevel) {
             case -1 -> "#000000";
             case 0 -> "#2cba00";
             case 1 -> "#a3ff00";
@@ -142,7 +142,6 @@ public class mainController {
             case 5 -> "#000000";
             default -> throw new IllegalStateException("niespodziewana wartość: " + indexLevel);
         };
-        return barColor;
     }
 
     private void createSensorReadingsDataTabs(Station station) {

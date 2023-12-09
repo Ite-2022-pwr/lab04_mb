@@ -6,7 +6,7 @@
 
     <groupId>pwr.ite.bedrylo</groupId>
     <artifactId>lab04</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>client</module>
